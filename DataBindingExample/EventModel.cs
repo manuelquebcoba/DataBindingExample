@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace DataBindingExample
 {
-    class Evento
+    class Evento : INotifyPropertyChanged
     {
         private string title;
         private DateTime date;
+        private string propertyName;
 
         public string Title
         {
@@ -19,9 +21,13 @@ namespace DataBindingExample
                 if (value != title)
                 {
                     title = value;
+                    OnPropertyChanged(title);
+
                 }
             }
         }
+
+       
 
         public DateTime Date
         {
@@ -31,15 +37,20 @@ namespace DataBindingExample
                 if(value != date)
                 {
                     date = value;
+                    OnPropertyChanged("Date");
                 }
             }
         }
 
-           
-
+        public event PropertyChangedEventHandler PropertyChanged;
         
-
-
-       
+        private void OnPropertyChanged(string title)
+        {
+            if (PropertyChanged != null) 
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+            
+        }
     }
 }
